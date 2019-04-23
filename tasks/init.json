@@ -1,0 +1,34 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "input_method": "powershell",
+  "description": "Regenerates the certificate of a Puppet Node.",
+  "implementations": [
+    {
+      "name": "windows.ps1",
+      "requirements": [
+        "powershell"
+      ]
+    },
+    {
+      "name": "linux.sh",
+      "requirements": [
+        "shell"
+      ],
+      "files": [
+        "facts/tasks/bash.sh"
+      ],
+      "input_method": "environment"
+    }
+  ],
+  "parameters": {
+    "certname": {
+      "description": "New certname to use. Will use FQDN on windows, and hostname on linux if none provided.",
+      "type": "Optional[String[1]]"
+    },
+    "section": {
+      "description": "Puppet.conf section to add the certname.",
+      "type": "Optional[Enum[main,master,agent,user]]"
+    }
+  }
+}
