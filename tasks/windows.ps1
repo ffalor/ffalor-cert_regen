@@ -1,35 +1,27 @@
-# groupmembers: 
+# cert_regen: 
 #
-# This task will add or remove users from a local group on the server.
-# Only one group can be managed per task, but any number of members can be managed.
+# This task will recreate puppet certificates on windows machines.
+# If no value is given for certname it will use the fqdn of the server.
 #
-# The task will return the state of the local group after a successful run, and
-# will error out with proper messages when invalid parameters were passed.
-#
-# Passing in a member that already exists in the group will not result in an error, and is idempotent.
+# If the new certname is the same as the current certname nothing is done.
 #
 # Parameters
 # ----------
 #
-# * `ensure`
-#   ENUM['present','absent']
-#   When set to absent user accounts specified in the members parameter are removed.
-#   When set to present user accounts specified in the members parameter are added.
+# * `certname`
+#   Optional[String[1]]
+#   New certname to use. Defaults to the fqdn.
 #
-# * `group`
-#   String[1]
-#   Group represents a local group. Ex: Administrators
+# * `section`
+#   Optional[Enum[main,master,agent,user]]
+#   Puppet.conf section to add the certname under. Defaults to main.
 #
-# * `member`
-#   Variant[String[1],Array[String[1]]]
-#   Member represents the users to add or remove from the local group.
 #
 # @example Bolt run from Command Line
-#   bolt task run groupmembers -n localhost 
+#   bolt task run cert_regen -n localhost 
 #     --params '{
-#      "ensure": "present", 
-#      "group": "Administrators",
-#      "member": [ "domain\\jdoe", "domain\\ffalor" 
+#      "certname": "present", 
+#      "section": "main",
 #      }'
 #
 # Authors

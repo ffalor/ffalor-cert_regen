@@ -27,7 +27,7 @@
       "type": "Optional[String[1]]"
     },
     "section": {
-      "description": "Puppet.conf section to add the certname.",
+      "description": "Puppet.conf section to add the certname under.",
       "type": "Optional[Enum[main,master,agent,user]]"
     }
   }
