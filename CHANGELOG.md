@@ -2,10 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## Release 0.1.0
+## Unreleased
 
-**Features**
+## Release 0.1.0 - 2019-4-24
 
-**Bugfixes**
+### Added
 
-**Known Issues**
+- cert_regen task initial release.

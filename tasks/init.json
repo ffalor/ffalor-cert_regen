@@ -9,25 +9,15 @@
       "requirements": [
         "powershell"
       ]
-    },
-    {
-      "name": "linux.sh",
-      "requirements": [
-        "shell"
-      ],
-      "files": [
-        "facts/tasks/bash.sh"
-      ],
-      "input_method": "environment"
     }
   ],
   "parameters": {
     "certname": {
-      "description": "New certname to use. Will use FQDN on windows, and hostname on linux if none provided.",
+      "description": "New certname to use. Defaults to DNS name.",
       "type": "Optional[String[1]]"
     },
     "section": {
-      "description": "Puppet.conf section to add the certname under.",
+      "description": "Puppet.conf section to add the certname under. Defaults to main.",
       "type": "Optional[Enum[main,master,agent,user]]"
     }
   }

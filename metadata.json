@@ -2,18 +2,26 @@
   "name": "ffalor-cert_regen",
   "version": "0.1.0",
   "author": "ffalor",
-  "summary": "",
+  "summary": "Task allows you to regenerate agent certificates on Windows.",
   "license": "Apache-2.0",
-  "source": "",
-  "dependencies": [
-
+  "source": "https://github.com/ffalor/ffalor-cert_regen",
+  "project_page": "https://github.com/ffalor/ffalor-cert_regen",
+  "issues_url": "https://github.com/ffalor/ffalor-cert_regen/issues",
+  "tags": [
+    "windows",
+    "certificate",
+    "cert",
+    "regen",
+    "task"
   ],
+  "dependencies": [],
   "operatingsystem_support": [
     {
       "operatingsystem": "windows",
       "operatingsystemrelease": [
         "2008 R2",
         "2012 R2",
+        "2016",
         "10"
       ]
     }

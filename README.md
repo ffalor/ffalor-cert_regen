@@ -1,95 +1,79 @@
-
 # cert_regen
 
-Welcome to your new module. A short overview of the generated parts can be found in the PDK documentation at https://puppet.com/pdk/latest/pdk_generating_modules.html .
+[![Build Status](https://travis-ci.org/ffalor/ffalor-cert_regen.svg?branch=master)](https://travis-ci.org/ffalor/ffalor-cert_regen)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/aae6b273b14f4c649d3db7135435bc56)](https://www.codacy.com/app/ffalor/ffalor-cert_regen?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ffalor/ffalor-cert_regen&amp;utm_campaign=Badge_Grade)
+![Puppet Forge downloads](https://img.shields.io/puppetforge/dt/ffalor/cert_regen.svg)
+![GitHub issues](https://img.shields.io/github/issues/ffalor/ffalor-cert_regen.svg)
+![Puppet Forge feedback score](https://img.shields.io/puppetforge/f/ffalor/cert_regen.svg?label=puppet%20score&style=plastic)
+![Puppet Forge version](https://img.shields.io/puppetforge/v/ffalor/cert_regen.svg)
+![Puppet Forge – PDK version](https://img.shields.io/puppetforge/pdk-version/ffalor/cert_regen.svg)
 
-The README template below provides a starting point with details about what information to include in your README.
+## Table of Contents
 
-
-
-
-
-
-
-#### Table of Contents
-
-1. [Description](#description)
-2. [Setup - The basics of getting started with cert_regen](#setup)
-    * [What cert_regen affects](#what-cert_regen-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with cert_regen](#beginning-with-cert_regen)
-3. [Usage - Configuration options and additional functionality](#usage)
-4. [Limitations - OS compatibility, etc.](#limitations)
-5. [Development - Guide for contributing to the module](#development)
+- [cert_regen](#certregen)
+  - [Table of Contents](#table-of-contents)
+  - [Description](#description)
+  - [Usage](#usage)
+    - [Paramaters](#paramaters)
+    - [Puppet Task and Bolt](#puppet-task-and-bolt)
+    - [Puppet Task API](#puppet-task-api)
+  - [Development](#development)
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your module does and what kind of problems users can solve with it.
+This module includes a puppet task that can be used to regenerate node certificates.
 
-This should be a fairly short description helps the user decide if your module is what they want.
+This task will use `puppet config` to change the certname of the agent node.
 
+A few reasons you may want to regenerate a certificate include:
 
-## Setup
+>Note: this list is based on the assumption your certnames are derived from the DNS names of each node.
 
-### What cert_regen affects **OPTIONAL**
-
-If it's obvious what your module touches, you can skip this section. For example, folks can probably figure out that your mysql_instance module affects their MySQL instances.
-
-If there's more that they should know about, though, this is the place to mention:
-
-* Files, packages, services, or operations that the module will alter, impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps for upgrading, you might want to include an additional "Upgrading" section here.
-
-### Beginning with cert_regen
-
-The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
+- Node's hostname changes
+- Node's domain changes
+- Certname was setup incorrectly
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your users how to use your module to solve problems, and be sure to include code examples. Include three to five examples of the most important or common tasks a user can accomplish with your module. Show users how to accomplish more complex tasks that involve different types, classes, and functions working in tandem.
+### Paramaters
 
-## Reference
+| Parameter | Description                                    | Default Value | Optional |
+| --------- | ---------------------------------------------- | ------------- | -------- |
+| certname  | New certname to use.                           | DNS Name      | True     |
+| section   | Puppet.conf section to add the certname under. | main          | True     |
 
-This section is deprecated. Instead, add reference information to your code as Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your module. For details on how to add code comments and generate documentation with Strings, see the Puppet Strings [documentation](https://puppet.com/docs/puppet/latest/puppet_strings.html) and [style guide](https://puppet.com/docs/puppet/latest/puppet_strings_style.html)
+### Puppet Task and Bolt
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the root of your module directory and list out each of your module's classes, defined types, facts, functions, Puppet tasks, task plans, and resource types and providers, along with the parameters for each.
+To run an cert_regen task, use the task command, specifying the command to be executed.
 
-For each element (class, defined type, function, and so on), list:
+- With PE on the command line, run `puppet task run cert_regen certname=<new_name> section=<main>`.
+- With Bolt on the command line, run `bolt task run cert_regen certname=<new_name> section=<main>`.
 
-  * The data type, if applicable.
-  * A description of what the element does.
-  * Valid values, if the data type doesn't make it obvious.
-  * Default value, if any.
+### Puppet Task API
 
-For example:
+endpoint: `https://<puppet>:8143/orchestrator/v1/command/task`
 
+method: `post`
+
+body:
+
+```json
+{
+  "environment": "production",
+  "task": "cert_regen",
+  "params": {
+    "certname": "neptune.example.com",
+    "section": "main"
+  },
+  "description": "Description for task",
+  "scope": {
+    "nodes": ["saturn.example.com"]
+  }
+}
 ```
-### `pet::cat`
 
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
-
-## Limitations
-
-In the Limitations section, list any incompatibilities, known issues, or other warnings.
+You can also run tasks in the PE console. See PE task documentation for complete information.
 
 ## Development
 
-In the Development section, tell other users the ground rules for contributing to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You can also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
+Feel free to fork it fix my crappy code and create a PR (:
